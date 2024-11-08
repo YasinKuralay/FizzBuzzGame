@@ -22,22 +22,30 @@ export class FizzbuzzDataService {
   /** Keeps track of the current number of the list. Starts from 1 and goes up to 100 */
   private currentNumberOfList: number = 1;
 
+  /** The subscription serves both the purpose of unsubscribing, and keeping track whether the timer is running. If it is undefined, the timer is not running. */
   private fizzbuzzTimerSubscription: Subscription | undefined;
 
   /**
    * Starts the timer that emits the FizzbuzzListElements on an interval of 500ms.
+   *
+   * @remarks Only starts the timer if it is not already running, by checking if fizzbuzzTimerSubscription is undefined.
    */
   public startEmittingItemsOnInterval(): void {
-    this.fizzbuzzTimerSubscription = interval(500).subscribe(() => {
-      this.calculateAndEmitNextItem();
-    });
+    if (this.fizzbuzzTimerSubscription === undefined) {
+      this.fizzbuzzTimerSubscription = interval(500).subscribe(() => {
+        this.calculateAndEmitNextItem();
+      });
+    }
   }
 
   /**
    * If the fizzbuzzTimer is running, stops it.
+   *
+   * @remarks Setting the fizzbuzzTimerSubscription to undefined is important to keep track of whether the timer is running or not.
    */
   public stopEmittingItemsOnInterval(): void {
     this.fizzbuzzTimerSubscription?.unsubscribe();
+    this.fizzbuzzTimerSubscription = undefined;
   }
 
   /**
