@@ -14,15 +14,23 @@ import { ReactiveFormsModule } from '@angular/forms';
   encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
+  /** The list used to render the items in the html. */
   public fizzbuzzList: FizzbuzzListElement[] = [];
-  private fizzbuzzListSubscription?: Subscription;
+
+  /** The formControl used to keep track of whether the user entered stop (case insensitive) in the input field, in which case the stop button will be enabled. */
   public stopperFormControl = new FormControl('', [
     Validators.required,
     Validators.pattern(/^stop$/i),
   ]);
 
+  private fizzbuzzListSubscription?: Subscription;
+
   constructor(private fizzbuzzDataService: FizzbuzzDataService) {}
 
+  /**
+   * Subscribes to the fizzbuzzList from the fizzbuzzDataService.
+   * Starts emitting items on interval.
+   */
   ngOnInit() {
     this.fizzbuzzListSubscription =
       this.fizzbuzzDataService.fizzbuzzList$.subscribe((list) => {
@@ -31,6 +39,9 @@ export class AppComponent {
     this.fizzbuzzDataService.startEmittingItemsOnInterval();
   }
 
+  /**
+   * Unsubscribes from the fizzbuzzListSubscription and stops emitting items on interval.
+   */
   ngOnDestroy() {
     this.fizzbuzzListSubscription?.unsubscribe();
     this.fizzbuzzDataService.stopEmittingItemsOnInterval();

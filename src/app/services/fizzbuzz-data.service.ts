@@ -5,8 +5,11 @@ import { BehaviorSubject, Subscription, interval } from 'rxjs';
 /**
  * This Service is responsible for all the data related to the Fizzbuzz game.
  *
- * The game is simple:
- * @describe
+ * The game is simple: It starts from 1 and goes up to 100.
+ * For each number, it prints 'Fizz' if the number is divisible by 3, 'Buzz' if divisible by 5, and 'FizzBuzz' if divisible by both 3 and 5.
+ * Otherwise, it prints the number itself.
+ *
+ * The list is emitted via a BehaviorSubject, which can be subscribed to by any component.
  *
  */
 @Injectable({
@@ -17,6 +20,7 @@ export class FizzbuzzDataService {
 
   /** The list of all FizzbuzzListElements. This will be exposed from this service via an observable. */
   private internalFizzbuzzList: FizzbuzzListElement[] = [];
+  /** Used to emit the internalFizzbuzzList to any component which subscribes to this. */
   public fizzbuzzList$ = new BehaviorSubject<FizzbuzzListElement[]>([]);
 
   /** Keeps track of the current number of the list. Starts from 1 and goes up to 100 */
