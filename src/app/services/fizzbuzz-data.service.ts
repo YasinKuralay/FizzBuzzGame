@@ -11,6 +11,12 @@ import { BehaviorSubject, Subscription, interval } from 'rxjs';
  *
  * The list is emitted via a BehaviorSubject, which can be subscribed to by any component.
  *
+ * @performance
+ * The Service could emit only the current item, instead of emitting the whole list every time.
+ * Since the list is small and has unique ids, this is not a problem in this case. Also, resetting etc. would be more complicated: Possibly through emitting a 'reset' event etc.
+ *
+ * The decision to generate uniqueId s for each element instead of just doing "track $index" in the for loop was intentional, but in hindsight a bit overkill :)
+ *
  */
 @Injectable({
   providedIn: 'root',
