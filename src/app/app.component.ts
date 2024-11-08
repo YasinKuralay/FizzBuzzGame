@@ -1,13 +1,24 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { FizzbuzzDataService } from './services/fizzbuzz-data.service';
+import { FizzbuzzListElement } from '../interfaces';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
-  title = 'fizz-the-buzz';
+  public fizzbuzzList: FizzbuzzListElement[] = [];
+
+  constructor(private fizzbuzzDataService: FizzbuzzDataService) {}
+
+  ngOnInit() {
+    this.fizzbuzzDataService.fizzbuzzList$.subscribe((list) => {
+      this.fizzbuzzList = list;
+    });
+    this.fizzbuzzDataService.startEmittingItemsOnInterval();
+  }
 }
