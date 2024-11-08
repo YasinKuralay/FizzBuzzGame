@@ -1,6 +1,23 @@
-@for (fizzbuzzItem of fizzbuzzList; track fizzbuzzItem.uniqueId; let idx =
-$index) {
-<div class="fizzbuzz-item" [class.is-even]="(idx + 1) % 2 === 0">
-  <span>{{ fizzbuzzItem.value }}</span>
+<div class="main-container">
+  <div class="form-controls">
+    <label class="stopper-input-label" for="stopper-input"
+      >Enter "stop" to enable the stop button</label
+    >
+    <input type="text" id="stopper-input" [formControl]="stopperFormControl" />
+    <div class="buttons-container">
+      <button (click)="startFizzBuzz()">Start</button>
+      <button (click)="stopFizzBuzz()" [disabled]="stopperFormControl.invalid">
+        Stop
+      </button>
+      <button (click)="resetFizzBuzzList()">Reset</button>
+    </div>
+  </div>
+  <ul class="fizzbuzz-list" aria-label="FizzBuzz Results" aria-live="polite">
+    @for (fizzbuzzItem of fizzbuzzList; track fizzbuzzItem.uniqueId; let idx =
+    $index) {
+    <li class="fizzbuzz-list-item" [class.is-even]="(idx + 1) % 2 === 0">
+      <span>{{ fizzbuzzItem.value }}</span>
+    </li>
+    }
+  </ul>
 </div>
-}
